@@ -1,0 +1,24 @@
+// Customer database
+use customers
+
+// Insert data points as JSON objects
+// We can propose a schema: first_name, last_name, age, reg_date
+// Inserting one point at a time:
+
+db.customers.insert(
+  {first_name: "Andrew", last_name: "Griffiths", age: 29, reg_date: new Date('10 Sept, 2010')}
+)
+
+// Inserting multiple points, use an array []
+db.customers.insert([
+  {first_name: "Janice", last_name: "Williams", age: 39, reg_date: new Date('10 Sept, 2010')},
+  {first_name: "Lloyd", last_name: "Bronter", age: 52, reg_date: new Date('1 June, 2013')},
+  {first_name: "Charles", last_name: "Nguyen", age: 23, reg_date: new Date('20 Oct, 2014')}
+])
+
+// Since there is no strict schema, data points can vary in structure within the document
+db.customers.insert([
+  {first_name: "Emeka", last_name: "Anyanwu", age: 45, gender: "male", reg_date: new Date('3 Sept, 2014')},
+  {first_name: "Tian", last_name: "Xiu", age: 32, gender: "male", reg_date: new Date('17 July, 2012')},
+  {first_name: "Thurani", last_name: "Ramapatiga", age: 43, gender: "female", reg_date: new Date('21 Oct, 2013')}
+])
