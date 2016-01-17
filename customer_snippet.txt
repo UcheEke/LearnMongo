@@ -1,4 +1,7 @@
 // Customer database
+// Illustrating basic operations in MongoDB within the console
+
+// switch to the customer document, which will create the table if it doesn't exist
 use customers
 
 // Insert data points as JSON objects
@@ -18,7 +21,14 @@ db.customers.insert([
 
 // Since there is no strict schema, data points can vary in structure within the document
 db.customers.insert([
+  {first_name: "Lisa", last_name: "Johnson", gender: "female"},
   {first_name: "Emeka", last_name: "Anyanwu", age: 45, gender: "male", reg_date: new Date('3 Sept, 2014')},
   {first_name: "Tian", last_name: "Xiu", age: 32, gender: "male", reg_date: new Date('17 July, 2012')},
   {first_name: "Thurani", last_name: "Ramapatiga", age: 43, gender: "female", reg_date: new Date('21 Oct, 2013')}
 ])
+
+// Updating records using the update and '$set' method
+db.customers.update({last_name: "Bronter"},{$set:{last_name: "Bronson"}})
+
+// Updating replaces a field if it exists or adds the field to the record
+db.customers.update({last_name: "Johnson"}, {$set:{age: 34}})
