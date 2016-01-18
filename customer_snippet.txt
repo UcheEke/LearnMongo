@@ -1,18 +1,18 @@
 // Customer database
 // Illustrating basic operations in MongoDB within the console
 
-// switch to the customer document, which will create the table if it doesn't exist
+// switch to the customer collection, which will create a collection of the given name if it doesn't exist
 use customers
 
-// Insert data points as JSON objects
+// Insert documents as JSON objects
 // We can propose a schema: first_name, last_name, age, reg_date
-// Inserting one point at a time:
+// Inserting documents one by one using insert:
 
 db.customers.insert(
   {first_name: "Andrew", last_name: "Griffiths", age: 29, reg_date: new Date('10 Sept, 2010')}
 )
 
-// Inserting multiple points, use an array []
+// Inserting multiple points, use an array [] with insert() or insertMany()
 db.customers.insert([
   {first_name: "Janice", last_name: "Williams", age: 39, reg_date: new Date('10 Sept, 2010')},
   {first_name: "Lloyd", last_name: "Bronter", age: 52, reg_date: new Date('1 June, 2013')},
@@ -32,3 +32,13 @@ db.customers.update({last_name: "Bronter"},{$set:{last_name: "Bronson"}})
 
 // Updating replaces a field if it exists or adds the field to the record
 db.customers.update({last_name: "Johnson"}, {$set:{age: 34}})
+
+// Updating with a unique identifier will guarantee that only the one specific record is updated
+db.customers.update({"_id" : ObjectId("569bbcbb6c92e098ac7d66ca")},{$set:{age : 25}})
+
+// Updating with upsert: Update + Insert - If an entry doesn't exist within the document
+db.customers.update({first_name: "Michael", last_name: "Borowitz"}, {$set: {age : 50}}, {upsert: true})
+// handy if you are doing multiple updates using a particular search criteria
+
+// Incrementing numeric fields with the $inc method
+db.customers.update({first_name:"Emeka", last_name:"Okafor"},{$inc{age: 1}})
