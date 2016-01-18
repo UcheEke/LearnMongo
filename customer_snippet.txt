@@ -12,6 +12,9 @@ db.customers.insert(
   {first_name: "Andrew", last_name: "Griffiths", age: 29, reg_date: new Date('10 Sept, 2010')}
 )
 
+// MongoDB will allocate a unique ID to the document with a field name "_id". This should be used in the main
+// to access specific documents.
+
 // Inserting multiple points, use an array [] with insert() or insertMany()
 db.customers.insert([
   {first_name: "Janice", last_name: "Williams", age: 39, reg_date: new Date('10 Sept, 2010')},
@@ -19,26 +22,59 @@ db.customers.insert([
   {first_name: "Charles", last_name: "Nguyen", age: 23, reg_date: new Date('20 Oct, 2014')}
 ])
 
-// Since there is no strict schema, data points can vary in structure within the document
+// Since there is no strict schema, documents can vary in structure within the collection
 db.customers.insert([
   {first_name: "Lisa", last_name: "Johnson", gender: "female"},
   {first_name: "Emeka", last_name: "Anyanwu", age: 45, gender: "male", reg_date: new Date('3 Sept, 2014')},
-  {first_name: "Tian", last_name: "Xiu", age: 32, gender: "male", reg_date: new Date('17 July, 2012')},
-  {first_name: "Thurani", last_name: "Ramapatiga", age: 43, gender: "female", reg_date: new Date('21 Oct, 2013')}
+  {first_name: "Tian", last_name: "Xiu", age: 32, gender: "male"},
+  {first_name: "Thurani", last_name: "Ramapatiga", gender: "female", reg_date: new Date('21 Oct, 2013')}
 ])
 
 // Updating records using the update and '$set' method
 db.customers.update({last_name: "Bronter"},{$set:{last_name: "Bronson"}})
 
-// Updating replaces a field if it exists or adds the field to the record
+// Updating replaces a field if it exists or adds the field to the document
 db.customers.update({last_name: "Johnson"}, {$set:{age: 34}})
 
-// Updating with a unique identifier will guarantee that only the one specific record is updated
+// Updating with a unique identifier will guarantee that only the one specific document is updated
 db.customers.update({"_id" : ObjectId("569bbcbb6c92e098ac7d66ca")},{$set:{age : 25}})
 
-// Updating with upsert: Update + Insert - If an entry doesn't exist within the document
+// Updating with upsert: Update + Insert - If an entry doesn't exist within the collection
 db.customers.update({first_name: "Michael", last_name: "Borowitz"}, {$set: {age : 50}}, {upsert: true})
 // handy if you are doing multiple updates using a particular search criteria
 
 // Incrementing numeric fields with the $inc method
 db.customers.update({first_name:"Emeka", last_name:"Okafor"},{$inc{age: 1}})
+
+// Documents can also contain embedded data in the form of other documents or arrays
+db.customers.insert(
+{
+  first_name: "Jemmima",
+  last_name: "Powell",
+  age: 40,
+  address: {
+    Street: "123 Mayonal Road",
+    Town: "Cricklethorpe",
+    County: "Amerset",
+    Postcode: "CT5 6XZ",
+    Country: "United Kingdom"
+  },
+  phone: {
+    Home: "22-222-222-222",
+    Work: "33-333-333-333",
+    Mobile: "44-444-444-444"
+  },
+  services : [
+    { service_id : "0323_123",
+      service_name: "Linux Hosting"
+    },
+    { service_id : "0323_255",
+      service_name: "Security Suite"
+    },
+    { service_id : "0113_476",
+      service_name: "Domain Registration",
+      domain_name: "somewhere.com"
+    }
+  ],
+  service_count: 3
+})
